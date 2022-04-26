@@ -1,15 +1,13 @@
 #include <stdio.h>
 #include "generate_grid.h"
-#include <stdbool.h>
 #include "solving_grid.h"
+#include "menus.h"
+
 
 /*
 int row_move, col_move, wanted_move, hint = 3, row_4x4 = 4, col_4x4 = 4;
 bool win = false;
-int solution_grid[4][4] = {1,0,0,1,
-                           1,0,1,0,
-                           0,1,1,0,
-                           0,1,0,1};
+int solution_grid[4] = {1,0,0,1,1,0,1,0,0,1,1,0,0,1,0,1};
 
 // In this array, 0 =invisible to user and 1 = visible to user
 int masK_grid[4][4] = {1,0,0,0,
@@ -32,7 +30,7 @@ wanted_move = enter_desired_move();
 */
 
 int main() {
-    int option = 0;
+    int option = 0, life = 3, *A;
 
     printf("#########################################\n");
     printf("#                 MENU                  #\n");
@@ -54,7 +52,27 @@ int main() {
         }
         case 1:
         {
-            printf("1");
+            int grid_choice;
+            printf("Which size of grid do you want to play with ?\n"
+                   "1. 4x4\n"
+                   "2. 8x8\n>>>");
+            scanf(" %d",&grid_choice);
+            switch(grid_choice)
+            {
+                case 1:
+                {
+                    submenus();
+                    break;
+                }
+                case 2 :
+                {
+                    printf("Grid 8x8 selected.");
+                    break;
+                }
+                default:
+                    printf("The selected choice is not among the given choices. ");
+                    break;
+            }
             break;
         }
         case 2:
