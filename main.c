@@ -3,89 +3,20 @@
 #include "solving_grid.h"
 #include "menus.h"
 
-
-/*
-int row_move, col_move, wanted_move, hint = 3, row_4x4 = 4, col_4x4 = 4;
-bool win = false;
-int solution_grid[4] = {1,0,0,1,1,0,1,0,0,1,1,0,0,1,0,1};
-
-// In this array, 0 =invisible to user and 1 = visible to user
-int masK_grid[4][4] = {1,0,0,0,
-                       0,0,1,0,
-                       1,0,1,1,
-                       0,1,0,0};
-
-int grid_game[4][4] = {1,9,9,9,
-                       9,9,1,9,
-                       1,9,1,1,
-                       9,1,9,9};
-display_the_grid_4x4(grid_game,col_4x4, row_4x4);
-while(win == false)
-{
-row_move = enter_row_number(row_4x4);
-col_move = enter_col_number(col_4x4);
-printf("You entered the following case : [%d][%d]",row_move,col_move);
-wanted_move = enter_desired_move();
-}
-*/
-
 int main() {
-    int option = 0, life = 3, *A;
+    int test[4][4] = {1,0,0,1,
+                  1,0,1,0,
+                  0,1,1,0,
+                  0,1,0,1};
+    int temporary_row[4]= {};
 
-    printf("#########################################\n");
-    printf("#                 MENU                  #\n");
-    printf("#########################################\n");
-
-    printf("# Enter 1 to solve a grid               #\n");
-    printf("# Enter 2 to automatically solve a grid #\n");
-    printf("# Enter 3 to generate a grid            #\n");
-    printf("# Enter 0 to exit app                   #\n");
-    printf("#########################################\n");
-
-    printf(">>");
-    scanf(" %d", &option);
-
-    switch(option){
-        case 0:
+    for(int i = 0; i < 4; i++)
+    {
+        for(int j = 0; j < 4; j++)
         {
-            break;
+            temporary_row[j] = test[i][j];
         }
-        case 1:
-        {
-            int grid_choice;
-            printf("Which size of grid do you want to play with ?\n"
-                   "1. 4x4\n"
-                   "2. 8x8\n>>>");
-            scanf(" %d",&grid_choice);
-            switch(grid_choice)
-            {
-                case 1:
-                {
-                    submenus();
-                    break;
-                }
-                case 2 :
-                {
-                    printf("Grid 8x8 selected.");
-                    break;
-                }
-                default:
-                    printf("The selected choice is not among the given choices. ");
-                    break;
-            }
-            break;
-        }
-        case 2:
-        {
-            printf("2");
-            break;
-        }
-        case 3:
-        {
-            printf("3");
-            break;
-        }
-        default:
-            printf("Choice selected not proposed.");
+        // We now compare if this array is the same as
     }
+    return 0;
 }

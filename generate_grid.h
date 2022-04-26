@@ -9,7 +9,8 @@
 #include <time.h>
 #include "settings.h"
 
-int** create_4x4_solution_grid();
-int** create_4x4_mask_grid();
+int** create_mask_by_user(int rowcolsize);
+int** create_4x4_solution_grid(int rowcolsize);
+int** create_4x4_mask_grid(int rowcolsize);
 void display_grid(int **A,int rowcolsize);
 #endif //TESTTAKUZU_GENERATE_GRID_H
