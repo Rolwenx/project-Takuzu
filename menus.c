@@ -1,15 +1,16 @@
-//
-// Created by nolwen ngassa on 4/20/22.
-//
+//--------//
+// MENU C //
+//--------//
 
+/* Includes */
 #include "menus.h"
 #include "solving_grid.h"
 
-// The submenus when chosing to solve a grid
-
-
-void starter_menu()
-{
+void starter_menu(){
+    /*
+     * The submenus when choosing to solve a grid
+     * displays menu and redirects to the option chosen by the user
+     */
     int option = 0;
     printf("-----------------------------------------\n");
     printf("-                 MENU                  -\n");
@@ -25,67 +26,63 @@ void starter_menu()
     scanf(" %d", &option);
 
     switch(option){
-        case 0:
-        {
-            break;
+        case 0:{
+            break; // exiting app
         }
-        case 1:
-        {
-            FirstChoice_Submenu_One();
+        case 1:{
+            FirstChoice_Submenu_One(); //solve a grid
         }
-        case 2:
-        {
-            SecondChoice_Submenu_One();
+        case 2:{
+            SecondChoice_Submenu_One(); //automatically solve a grid
         }
-        case 3:
-        {
-            ThirdChoice_Submenu_One();
+        case 3:{
+            ThirdChoice_Submenu_One(); //generate a grid
         }
-        default:
-        {
+        default:{
             printf("Choice selected not proposed.\n");
             starter_menu();
         }
     }
 }
 
-void FirstChoice_Submenu_One() {
+void FirstChoice_Submenu_One(){
+    /*
+     * The user selects the grid size
+     */
     int grid_choice;
     printf("Which size of grid do you want to play with ?\n"
            "1. Enter 1 for a 4x4 grid\n"
            "2. Enter 2 for a 8x8 grid\n"
            "3. Enter 3 to return to starter menu\n>>>");
-    scanf(" %d",&grid_choice);
-    switch(grid_choice)
-    {
-        case 1:
-        {
-            char **solution_grid_4x4, **mask_4x4_grid, **game_grid4x4 = NULL;
+    scanf(" %d", &grid_choice);
+
+    // initialising grid, mask and solution
+    char **solution_grid, **mask_grid, **game_grid = NULL;
+    switch(grid_choice){
+        case 1:{ //4*4 grid
             int size = 4;
             // We choose a mask grid from the mask array in settings.c then we store it
-            mask_4x4_grid = create_4x4_mask_grid(size);
+            mask_grid = create_4x4_mask_grid(size);
             // We choose a solution grid from the solution array in settings.c then we store it
-            solution_grid_4x4 = create_4x4_solution_grid(size);
-            FirstChoice_Submenu_Two(solution_grid_4x4, mask_4x4_grid, game_grid4x4, size);
+            solution_grid = create_4x4_solution_grid(size);
+            // We automatically solve the grid
+            FirstChoice_Submenu_Two(solution_grid, mask_grid, game_grid, size);
             break;
         }
-        case 2 :
-        {
-            char **solution_grid_8x8, **mask_8x8_grid, **game_grid8x8 = NULL;
-            int size =8;
+        case 2 :{ // 8*8 grid
+            int size = 8;
             // We choose a mask grid from the mask array in settings.c then we store it
-            mask_8x8_grid = create_8x8_mask_grid(size);
+            mask_grid = create_8x8_mask_grid(size);
             // We choose a solution grid from the solution array in settings.c then we store it
-            solution_grid_8x8 = create_8x8_solution_grid(size);
-            FirstChoice_Submenu_Two(solution_grid_8x8, mask_8x8_grid, game_grid8x8, size);
+            solution_grid = create_8x8_solution_grid(size);
+            // We automatically solve the grid
+            FirstChoice_Submenu_Two(solution_grid, mask_grid, game_grid, size);
             break;
         }
-        case 3:
-        {
+        case 3:{ // going back to menu
             starter_menu();
         }
-        default:
-        {
+        default:{
             printf("Choice selected not proposed.\n");
             starter_menu();
         }
@@ -93,7 +90,10 @@ void FirstChoice_Submenu_One() {
 }
 
 
-void FirstChoice_Submenu_Two(char **solution_grid, char **mask_grid, char **game_grid, int rowcolsize) {
+void FirstChoice_Submenu_Two(char **solution_grid, char **mask_grid, char **game_grid, int size){
+    /*
+     * The user chooses how to create a mask
+     */
     int submenu_choice;
     printf("What do you want to do now ?\n"
            "1. Enter 1 to fill a mask manually\n"
@@ -102,51 +102,49 @@ void FirstChoice_Submenu_Two(char **solution_grid, char **mask_grid, char **game
            "4. Enter 4 to return to previous menu.\n"
            "5. Enter 5 to return to starter menu\n>>>");
     scanf(" %d", &submenu_choice);
-    switch (submenu_choice) {
-        case 1 : {
+
+    switch (submenu_choice){
+        case 1 :{ // fill a mask manually
             printf("----- SOLUTION GRID -----\n");
-            display_grid(solution_grid, rowcolsize);
+            display_grid(solution_grid, size);
             // We call the function that allows the user to manually enter their grid
-            mask_grid = create_mask_by_user(rowcolsize);
+            mask_grid = create_mask_by_user(size);
             printf("\n\n----- SOLUTION GRID -----\n");
-            display_grid(solution_grid, rowcolsize);
+            display_grid(solution_grid, size);
             printf("\n\n----- MASK -----\n");
-            display_grid(mask_grid, rowcolsize);
+            display_grid(mask_grid, size);
             // We create the game grid according to the solution grid and the mask
-            game_grid = create_game_grid(mask_grid, solution_grid, rowcolsize);
+            game_grid = create_game_grid(mask_grid, solution_grid, size);
             printf("\n\n----- GAME GRID -----\n");
-            display_grid(game_grid, rowcolsize);
+            display_grid(game_grid, size);
             printf("\n");
             starter_menu();
         }
-        case 2: {
+        case 2: { // automatically generate a mask
             printf("----- MASK -----\n");
-            display_grid(mask_grid, rowcolsize);
+            display_grid(mask_grid, size);
             // We create the game grid according to the solution grid and the mask
-            game_grid = create_game_grid(mask_grid, solution_grid, rowcolsize);
+            game_grid = create_game_grid(mask_grid, solution_grid, size);
             printf("\n\n----- GAME GRID -----\n");
-            display_grid(game_grid, rowcolsize);
+            display_grid(game_grid, size);
             printf("\n");
             starter_menu();
 
-            case 3: {
+            case 3: { // play (the mask will be generated randomly)
                 int life = 3;
-                printf("A new mask has been choosen randomly, therefore a new grid. Let the game begin\n");
+                printf("A new mask has been chosen randomly, therefore a new grid. Let the game begin\n");
                 // We create the game grid according to the solution grid and the mask
-                game_grid = create_game_grid(mask_grid, solution_grid, rowcolsize);
-                solving_game_not_automatic(rowcolsize, game_grid, solution_grid, &life);
+                game_grid = create_game_grid(mask_grid, solution_grid, size);
+                solving_game_not_automatic(size, game_grid, solution_grid, &life);
                 starter_menu();
             }
-            case 4 :
-            {
+            case 4 :{ // Return to previous menu
                 FirstChoice_Submenu_One();
             }
-            case 5 :
-            {
+            case 5 :{ // Return to starter menu
                 starter_menu();
             }
-            default :
-            {
+            default :{
                 printf("Choice selected not proposed.\n");
                 starter_menu();
             }
@@ -154,112 +152,109 @@ void FirstChoice_Submenu_Two(char **solution_grid, char **mask_grid, char **game
     }
 }
 
-void SecondChoice_Submenu_One() {
+void SecondChoice_Submenu_One(){
+    /*
+     * automatically solve a grid
+     */
     int grid_choice;
     printf("Which size of grid do you want to automatically solve ?\n"
            "1. Enter 1 for a 4x4 grid\n"
            "2. Enter 2 for a 8x8 grid\n"
            "3. Enter 3 to return to starter menu\n>>>");
     scanf(" %d",&grid_choice);
-    switch(grid_choice)
-    {
-        case 1:
-        {
-            char **solution_grid_4x4, **mask_4x4_grid, **game_grid4x4 = NULL;
+    switch(grid_choice){
+        char **solution_grid, **mask_grid, **game_grid = NULL;
+        case 1:{ // 4*4 grid
             int size= 4;
             // We choose a mask grid from the mask array in settings.c then we store it
-            mask_4x4_grid = create_4x4_mask_grid(size);
+            mask_grid = create_4x4_mask_grid(size);
             // We choose a solution grid from the solution array in settings.c then we store it
-            solution_grid_4x4 = create_4x4_solution_grid(size);
+            solution_grid = create_4x4_solution_grid(size);
 
-            printf("A new mask has been choosen randomly, therefore a new game grid. Let the game begin.\n");
+            printf("A new mask has been chosen randomly, therefore a new game grid. Let the game begin.\n");
             // We create the game grid according to the solution grid and the mask
-            game_grid4x4 = create_game_grid(mask_4x4_grid, solution_grid_4x4, size);
+            game_grid = create_game_grid(mask_grid, solution_grid, size);
 
             printf("\n\n----- GAME GRID -----\n");
-            display_grid(game_grid4x4, size);
+            display_grid(game_grid, size);
             printf("\n");
 
-            solving_game_automatic(size,game_grid4x4, solution_grid_4x4);
+            // solving grid automatically
+            solving_game_automatic(size,game_grid, solution_grid);
 
             starter_menu();
         }
-        case 2 :
-        {
-            char **solution_grid_8x8, **mask_8x8_grid, **game_grid8x8 = NULL;
+        case 2 :{ // 8*8 grid
             int size = 8;
             // We choose a mask grid from the mask array in settings.c then we store it
-            mask_8x8_grid = create_8x8_mask_grid(size);
+            mask_grid = create_8x8_mask_grid(size);
             // We choose a solution grid from the solution array in settings.c then we store it
-            solution_grid_8x8 = create_8x8_solution_grid(size);
+            solution_grid = create_8x8_solution_grid(size);
 
-            printf("A new mask has been choosen randomly, therefore a new game grid. Let the game begin.\n");
+            printf("A new mask has been chosen randomly, therefore a new game grid. Let the game begin.\n");
             // We create the game grid according to the solution grid and the mask
-            game_grid8x8 = create_game_grid(mask_8x8_grid, solution_grid_8x8, size);
+            game_grid = create_game_grid(mask_grid, solution_grid, size);
 
             printf("\n\n----- GAME GRID -----\n");
-            display_grid(game_grid8x8, size);
+            display_grid(game_grid, size);
             printf("\n");
 
-            solving_game_automatic(size,game_grid8x8, solution_grid_8x8);
+            // solving grid automatically
+            solving_game_automatic(size,game_grid, solution_grid);
 
             starter_menu();
         }
-        case 3:
-        {
+        case 3:{
             starter_menu();
         }
-        default:
-        {
+        default:{
             printf("Choice selected not proposed.\n");
             starter_menu();
         }
     }
 }
 
-void ThirdChoice_Submenu_One() {
+void ThirdChoice_Submenu_One(){
+    /*
+     * generate a grid
+     */
     int grid_choice;
     printf("Which size of grid do you want to play with ?\n"
            "1. Enter 1 for a 4x4 grid\n"
            "2. Enter 2 for a 8x8 grid\n"
            "3. Enter 3 to return to starter menu\n>>>");
-    scanf(" %d",&grid_choice);
-    switch(grid_choice)
-    {
-        case 1:
-        {
+    scanf(" %d", &grid_choice);
+    switch(grid_choice){
+        case 1:{
             int size = 4;
             ThirdChoice_Submenu_Two(size);
         }
-        case 2 :
-        {
+        case 2 :{
             int size = 8;
             ThirdChoice_Submenu_Two(size);
         }
-        case 3:
-        {
+        case 3:{
             starter_menu();
         }
-        default:
-        {
+        default:{
             printf("Choice selected not proposed.\n");
             starter_menu();
         }
     }
 }
 
-void ThirdChoice_Submenu_Two(int size)
-{
+void ThirdChoice_Submenu_Two(int size){
+    /*
+     *
+     */
     int grid_choice;
     printf("What do you want to do?\n"
            "1. Enter 1 to display all valid rows (columns)\n"
            "2. Enter 2 to generate a valid Takuzu grid\n"
            "3. Enter 3 to return to starter menu\n>>>");
     scanf(" %d",&grid_choice);
-    switch(grid_choice)
-    {
-        case 1:
-        {
+    switch(grid_choice){
+        case 1:{ // display all valid rows (columns)
             char *generated_row;
             int size_for_random;
             char is_row_good;
@@ -281,8 +276,7 @@ void ThirdChoice_Submenu_Two(int size)
             printf("------------------------------------------------------------------------------------\n");
             printf("\n");
             sleep(3);
-            for(int rows = 1; rows < size_for_random; rows++)
-            {
+            for(int rows = 1; rows < size_for_random; rows++){
                 decimal_number = rows;
                 //printf("decimal number: %d\n",decimal_number);
                 // GENERATION OF THE ROW
@@ -297,8 +291,7 @@ void ThirdChoice_Submenu_Two(int size)
             sleep(3);
             starter_menu();
         }
-        case 2 :
-        {
+        case 2 :{ // generate a valid Takuzu grid
             char **solution_grid;
             char *generated_row;
             char is_row_good, is_decimal_in_list;
@@ -308,19 +301,16 @@ void ThirdChoice_Submenu_Two(int size)
              * similar rows since it's against the rules of the takuzu */
 
             int *decimal_number_list = (int*) malloc(size * sizeof(int));
-            solution_grid =  generate_a_2D_array(size);
+            solution_grid = generate_a_2D_array(size);
 
             printf("------------------------------------------------------------------------------------\n");
             printf("-                 Here's the list of all valid Rows for a %dx%d grid               -\n",size,size);
             printf("------------------------------------------------------------------------------------\n");
             printf("\n");
-            for(int rows = 0; rows < size; rows++)
-            {
-                do
-                {
+            for(int rows = 0; rows < size; rows++){
+                do{
                     // GENERATION OF THE DECIMAL NUMBER
-                    do
-                    {
+                    do{
                         // We first generate a decimal number number
                         decimal_number= generate_a_decimal_number(size);
 
@@ -351,8 +341,7 @@ void ThirdChoice_Submenu_Two(int size)
                 display_a_row(generated_row,size);
 
                 // When the generated row is seen as valid, we store it in a 2D array solution grid
-                for(int col = 0; col < size; col++)
-                {
+                for(int col = 0; col < size; col++){
                     solution_grid[rows][col] = generated_row[col];
                 }
                 filled_rows_in_array++;
@@ -366,12 +355,10 @@ void ThirdChoice_Submenu_Two(int size)
             starter_menu();
 
         }
-        case 3:
-        {
+        case 3:{
             starter_menu();
         }
-        default:
-        {
+        default:{
             printf("Choice selected not proposed.\n");
             starter_menu();
         }
