@@ -1,74 +1,68 @@
-//
-// Created by nolwen ngassa on 4/7/22.
-//
+//---------------//
+// GENERATE GRID //
+//---------------//
 
+
+/* Includes */
 #include "generate_grid.h"
 
-// ---------- Generating valid TAKUZU rows ----------
-
-
-int generate_a_decimal_number(int size)
-{
+int generate_a_decimal_number(int size){
+    /*
+     * Generates valid rows
+     */
     int decimal_number;
     // If it's a 4x4 grid, we want to generate a decimal number from 0 to 15
-    if(size == 4)
-    {
+    if(size == 4){
         decimal_number = rand()%16;
         return decimal_number;
     }
     // If it's a 8x8 grid, we want to generate a binary number from 0 to 15
-    if(size == 8)
-    {
+    if(size == 8){
         decimal_number = rand()%256;
         return decimal_number;
     }
     return 0;
 }
 
-// A function that checks if a number belongs to a list
-char is_number_in_list(int size, int number, int* list)
-{
-    for(int i = 0; i < size; i++)
-    {
+char is_number_in_list(int size, int number, int* list){
+    /*
+     * A function that checks if a number belongs to a list
+     */
+    for(int i = 0; i < size; i++){
         if(list[i] == number)
             return 'Y';
     }
     return 'N';
-
 }
 
-char* generate_row(int size, int decimal_number)
-{
-    // We create the array that's going to contain the generated number
-    char*binary_code = (char*) malloc(size * sizeof(char));
+char* generate_row(int size, int decimal_number){
+    /*
+     * We create the array that's going to contain the generated number
+     */
+    char *binary_code = (char*) malloc(size * sizeof(char));
 
     int temp;
+
     // We convert the decimal number to binary
-    while( decimal_number > 0)
-    {
-        if( decimal_number != 0)
-        {
+    while(decimal_number > 0){
+        if(decimal_number != 0){
             // We fill the array with the rest of the division of the decimal number by 2 because the rest constitute the binary number of the number
-            for(int i=0; i < size; i++)
-            {
+            for(int i=0; i < size; i++){
                 temp =  decimal_number % 2;
-                // We transform the number that we just obtain into a char so that it will fit our array of characters
+                // We transform the number that we just obtained into a char so that it will fit our array of characters
                 binary_code[i] = temp + '0';
                 decimal_number = decimal_number/2 ;
             }
         }
-        else
-        {
-            for(int i=0; i < size; i++)
-            {
+        else{
+            for(int i=0; i < size; i++){
                 binary_code[i] = '0';
             }
         }
     }
     // We then reverse the array because it's by reversing it that we obtain the binary number of our decimal number
     char temp_storage;
-    for(int i=0; i < size/2; i++)
-    {
+    for(int i=0; i < size/2; i++){
         temp_storage = binary_code[i];
         binary_code[i] = binary_code[size-i-1];
         binary_code[size-i-1] = temp_storage;
@@ -76,15 +70,14 @@ char* generate_row(int size, int decimal_number)
     return binary_code;
 }
 
-// We generate a 2D Array, and we initialized it at 0;
-char** generate_a_2D_array(int size)
-{
-    char**Array = (char**)malloc(sizeof(char*) * size);
-    for(int row= 0;row < size; row++)
-    {
+char** generate_a_2D_array(int size){
+    /*
+     * We generate a 2D Array, and we initialized it at 0
+     */
+    char **Array = (char**)malloc(sizeof(char*) * size);
+    for(int row = 0;row < size; row++){
         Array[row] = (char*)malloc(sizeof(char) * size);
-        for(int col=0; col < size; col++)
-        {
+        for(int col = 0; col < size; col++){
             Array[row][col] = '0';
         }
     }
@@ -282,4 +275,3 @@ void display_grid(char **grid,int rowcolsize)
             printf("_");
     }
 }
-
